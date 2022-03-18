@@ -8,7 +8,7 @@ import org.flywaydb.core.api.configuration.ClassicConfiguration;
 import org.flywaydb.core.api.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 
-    @Mojo(name = "Executor-sql", defaultPhase = LifecyclePhase.COMPILE)
+@Mojo(name = "Executor-sql", defaultPhase = LifecyclePhase.COMPILE)
 public class ExecutorSql extends AbstractMojo {
 
     @Value("${jdbcUrl}")
