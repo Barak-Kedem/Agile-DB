@@ -21,13 +21,20 @@ public class ExecutorSql extends AbstractMojo {
     public static final String JDBC_URL = "jdbcUrl";
     public static final String PASSWORD = "password";
     public static final String USER = "user";
-    public static final String DB_SQLS = "/db/sqls/";
+    public static final String DB_SQLS = "\\db\\sqls\\";
     public static final String SRC_RESOURCE_PATH = "/src/main/resources/application.properties";
     public static final String APPLICATION_PROPERTIES = "application.properties";
     @Value("${user}")
     String user;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("*****************************************");
         System.out.println("******** STARTING SQL EXECUTION *********");
         System.out.println("*****************************************");
@@ -56,7 +63,7 @@ public class ExecutorSql extends AbstractMojo {
         final String password = prop.getProperty(PASSWORD);
         final ClassicConfiguration configuration = new ClassicConfiguration();
         configuration.setDataSource(jdbcUrl, user, password);
-        configuration.setLocations(new Location(dir+ DB_SQLS));
+        configuration.setLocations(new Location(DB_SQLS));//dir+ DB_SQLS));
         final Flyway flyway = new Flyway(configuration);
         flyway.migrate();
     }
