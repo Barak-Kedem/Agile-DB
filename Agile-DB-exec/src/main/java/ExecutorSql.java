@@ -21,7 +21,7 @@ public class ExecutorSql extends AbstractMojo {
     public static final String JDBC_URL = "jdbcUrl";
     public static final String PASSWORD = "password";
     public static final String USER = "user";
-    public static final String DB_SQLS = "\\db\\sqls\\";
+    public static final String DB_SQLS = "\\db\\migration\\";
     public static final String SRC_RESOURCE_PATH = "/src/main/resources/application.properties";
     public static final String APPLICATION_PROPERTIES = "application.properties";
     @Value("${user}")
@@ -50,8 +50,12 @@ public class ExecutorSql extends AbstractMojo {
         final String password = prop.getProperty(PASSWORD);
         final ClassicConfiguration configuration = new ClassicConfiguration();
         configuration.setDataSource(jdbcUrl, user, password);
-        configuration.setLocations(new Location(DB_SQLS));//dir+ DB_SQLS));
+        final String migrationPath = "filesystem:" + dir+ DB_SQLS;
+        System.out.println("dir: "+ migrationPath);
+        configuration.setLocations(new Location(migrationPath));//dir+ DB_SQLS));
         final Flyway flyway = new Flyway(configuration);
+        flyway.repair();
+        //flyway.baseline();
         flyway.migrate();
     }
 
