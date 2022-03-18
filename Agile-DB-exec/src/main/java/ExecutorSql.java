@@ -28,37 +28,24 @@ public class ExecutorSql extends AbstractMojo {
     String user;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
         System.out.println("*****************************************");
         System.out.println("******** STARTING SQL EXECUTION *********");
         System.out.println("*****************************************");
         final String dir = System.getProperty("user.dir");
-        System.out.println("current dir = " + dir);
-
-        Properties prop = new Properties();
-        String propFileName = APPLICATION_PROPERTIES;
-
+        final Properties prop = new Properties();
+        final String propFileName = APPLICATION_PROPERTIES;
         InputStream inputStream = null;
         try {
+            Class.forName("org.postgresql.Driver");
             inputStream = new FileInputStream(dir+ SRC_RESOURCE_PATH);
+            prop.load(inputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-
-        try {
-            prop.load(inputStream);
-        } catch (IOException e) {
+        } catch(ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
 
         final String user = prop.getProperty(USER);
-        System.out.println("user "+ user);
         final String jdbcUrl = prop.getProperty(JDBC_URL);
         final String password = prop.getProperty(PASSWORD);
         final ClassicConfiguration configuration = new ClassicConfiguration();
