@@ -39,19 +39,16 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>Create-sql</goal>
                             <goal>Executor-sql</goal>
                         </goals>
-                        <configuration>
-                            <files>
-                                <file>src/main/resources/application.properties</file>
-                            </files>
-                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <scope>test</scope>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

@@ -18,14 +18,11 @@ import java.util.Properties;
 @Mojo(name = "Executor-sql", defaultPhase = LifecyclePhase.COMPILE)
 public class ExecutorSql extends AbstractMojo {
 
-    public static final String JDBC_URL = "jdbcUrl";
-    public static final String PASSWORD = "password";
-    public static final String USER = "user";
-    public static final String DB_SQLS = "\\db\\migration\\";
-    public static final String SRC_RESOURCE_PATH = "/src/main/resources/application.properties";
-    public static final String APPLICATION_PROPERTIES = "application.properties";
-    @Value("${user}")
-    String user;
+    private static final String JDBC_URL = "jdbcUrl";
+    private static final String PASSWORD = "password";
+    private static final String USER = "user";
+    private static final String DB_SQLS = "/db/migration/";
+    private static final String SRC_RESOURCE_PATH = "/src/main/resources/application.properties";
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         System.out.println("*****************************************");
@@ -33,7 +30,6 @@ public class ExecutorSql extends AbstractMojo {
         System.out.println("*****************************************");
         final String dir = System.getProperty("user.dir");
         final Properties prop = new Properties();
-        final String propFileName = APPLICATION_PROPERTIES;
         InputStream inputStream = null;
         try {
             Class.forName("org.postgresql.Driver");
