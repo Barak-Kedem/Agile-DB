@@ -36,8 +36,6 @@ public class CreateSql extends AbstractMojo {
             final LocalDateTime now = LocalDateTime.now();
 
             final String migrationSqlName = getMigrationSqlName(developerName, dtf, now);
-            System.out.println(migrationPath);
-            System.out.println(migrationSqlName);
             final File sql = new File(migrationPath, migrationSqlName);
             sql.createNewFile();
 
