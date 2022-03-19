@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.example</groupId>
     <artifactId>Agile-DB-Tester</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -20,17 +19,10 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.example</groupId>
@@ -39,7 +31,6 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>Create-sql</goal>
                             <goal>Executor-sql</goal>
                         </goals>
                     </execution>
@@ -48,8 +39,21 @@
                     <scope>test</scope>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.example</groupId>
+                <artifactId>Agile-Sql-create</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>Create-sql</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scope>test</scope>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
