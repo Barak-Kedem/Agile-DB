@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-@Mojo(name = "Create-sql", defaultPhase = LifecyclePhase.COMPILE)
+@Mojo(name = "CreateSql", defaultPhase = LifecyclePhase.COMPILE)
 public class CreateSql extends AbstractMojo {
 
     private static final String DB_SQLS = "/db/migration/";

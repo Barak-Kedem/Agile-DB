@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Mojo(name = "Executor-sql", defaultPhase = LifecyclePhase.COMPILE)
+@Mojo(name = "ExecutorSql", defaultPhase = LifecyclePhase.COMPILE)
 public class ExecutorSql extends AbstractMojo {
 
     private static final String JDBC_URL = "jdbcUrl";

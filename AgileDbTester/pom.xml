@@ -26,12 +26,12 @@
         <plugins>
             <plugin>
                 <groupId>org.example</groupId>
-                <artifactId>Agile-DB-exec</artifactId>
+                <artifactId>AgileDbExec</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>Executor-sql</goal>
+                            <goal>ExecutorSql</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -41,12 +41,12 @@
             </plugin>
             <plugin>
                 <groupId>org.example</groupId>
-                <artifactId>Agile-Sql-create</artifactId>
+                <artifactId>AgileSqlcreate</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>Create-sql</goal>
+                            <goal>CreateSql</goal>
                         </goals>
                     </execution>
                 </executions>
