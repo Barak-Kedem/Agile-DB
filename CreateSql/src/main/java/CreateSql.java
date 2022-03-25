@@ -24,11 +24,8 @@ public class CreateSql extends AbstractMojo {
         System.out.println("*****************************************");
         final String dir = System.getProperty("user.dir");
 
-        final Properties prop = new Properties();
-        InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(dir + SRC_RESOURCE_PATH);
-            prop.load(inputStream);
+            final Properties prop = getProperties(dir);
             final String developerName = prop.getProperty("developer.name");
 
             final String migrationPath = dir + DB_SQLS;
@@ -42,6 +39,14 @@ public class CreateSql extends AbstractMojo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Properties getProperties(String dir) throws IOException {
+        final Properties prop = new Properties();
+        InputStream inputStream = null;
+        inputStream = new FileInputStream(dir + SRC_RESOURCE_PATH);
+        prop.load(inputStream);
+        return prop;
     }
 
     private String getMigrationSqlName(String developerName, DateTimeFormatter dtf, LocalDateTime now) {
