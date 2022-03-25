@@ -28,31 +28,38 @@ public class ExecutorSql extends AbstractMojo {
         System.out.println("*****************************************");
         System.out.println("******** STARTING SQL EXECUTION *********");
         System.out.println("*****************************************");
+        final Properties prop = loadProperties(System.getProperty("user.dir"));
+        final ClassicConfiguration configuration = buildConfiguration(prop);
+        final Flyway flyway = new Flyway(configuration);
+        flyway.repair();
+        flyway.migrate();
+    }
+
+    private ClassicConfiguration buildConfiguration(Properties prop) {
+        final String user = prop.getProperty(USER);
+        final String jdbcUrl = prop.getProperty(JDBC_URL);
+        final String password = prop.getProperty(PASSWORD);
+        final ClassicConfiguration configuration = new ClassicConfiguration();
+        configuration.setDataSource(jdbcUrl, user, password);
         final String dir = System.getProperty("user.dir");
+        final String migrationPath = "filesystem:" + dir+ DB_SQLS;
+        configuration.setLocations(new Location(migrationPath));//dir+ DB_SQLS));
+        return configuration;
+    }
+
+    private Properties loadProperties(String dir) {
         final Properties prop = new Properties();
         InputStream inputStream = null;
         try {
             Class.forName("org.postgresql.Driver");
-            inputStream = new FileInputStream(dir+ SRC_RESOURCE_PATH);
+            inputStream = new FileInputStream(dir + SRC_RESOURCE_PATH);
             prop.load(inputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch(ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
-
-        final String user = prop.getProperty(USER);
-        final String jdbcUrl = prop.getProperty(JDBC_URL);
-        final String password = prop.getProperty(PASSWORD);
-        final ClassicConfiguration configuration = new ClassicConfiguration();
-        configuration.setDataSource(jdbcUrl, user, password);
-        final String migrationPath = "filesystem:" + dir+ DB_SQLS;
-        System.out.println("dir: "+ migrationPath);
-        configuration.setLocations(new Location(migrationPath));//dir+ DB_SQLS));
-        final Flyway flyway = new Flyway(configuration);
-        flyway.repair();
-        //flyway.baseline();
-        flyway.migrate();
+        return prop;
     }
 
     public static void main (String args[]) throws MojoExecutionException, MojoFailureException {
