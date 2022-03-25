@@ -6,13 +6,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.Location;
 import org.flywaydb.core.api.configuration.ClassicConfiguration;
-import org.flywaydb.core.api.configuration.Configuration;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 @Mojo(name = "ExecutorSql", defaultPhase = LifecyclePhase.COMPILE)
@@ -28,11 +22,18 @@ public class ExecutorSql extends AbstractMojo {
         System.out.println("*****************************************");
         System.out.println("******** STARTING SQL EXECUTION *********");
         System.out.println("*****************************************");
-        final Properties prop = loadProperties(System.getProperty("user.dir"));
-        final ClassicConfiguration configuration = buildConfiguration(prop);
-        final Flyway flyway = new Flyway(configuration);
-        flyway.repair();
-        flyway.migrate();
+        final Properties prop;
+        try {
+            Class.forName("org.postgresql.Driver");
+            prop = PropertyReader.getProperties(System.getProperty("user.dir"));
+
+            final ClassicConfiguration configuration = buildConfiguration(prop);
+            final Flyway flyway = new Flyway(configuration);
+            flyway.repair();
+            flyway.migrate();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private ClassicConfiguration buildConfiguration(Properties prop) {
@@ -42,27 +43,12 @@ public class ExecutorSql extends AbstractMojo {
         final ClassicConfiguration configuration = new ClassicConfiguration();
         configuration.setDataSource(jdbcUrl, user, password);
         final String dir = System.getProperty("user.dir");
-        final String migrationPath = "filesystem:" + dir+ DB_SQLS;
+        final String migrationPath = "filesystem:" + dir + DB_SQLS;
         configuration.setLocations(new Location(migrationPath));//dir+ DB_SQLS));
         return configuration;
     }
 
-    private Properties loadProperties(String dir) {
-        final Properties prop = new Properties();
-        InputStream inputStream = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            inputStream = new FileInputStream(dir + SRC_RESOURCE_PATH);
-            prop.load(inputStream);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch(ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-        return prop;
-    }
-
-    public static void main (String args[]) throws MojoExecutionException, MojoFailureException {
+    public static void main(String args[]) throws MojoExecutionException, MojoFailureException {
         ExecutorSql executorSql = new ExecutorSql();
         executorSql.execute();
     }

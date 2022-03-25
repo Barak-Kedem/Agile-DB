@@ -14,7 +14,6 @@ import java.util.Properties;
 public class CreateSql extends AbstractMojo {
 
     private static final String DB_SQLS = "/db/migration/";
-    private static final String SRC_RESOURCE_PATH = "/src/main/resources/application.properties";
     @Value("${user}")
     String user;
 
@@ -25,7 +24,7 @@ public class CreateSql extends AbstractMojo {
         final String dir = System.getProperty("user.dir");
 
         try {
-            final Properties prop = getProperties(dir);
+            final Properties prop = PropertyReader.getProperties(dir);
             final String developerName = prop.getProperty("developer.name");
 
             final String migrationPath = dir + DB_SQLS;
@@ -41,13 +40,6 @@ public class CreateSql extends AbstractMojo {
         }
     }
 
-    private Properties getProperties(String dir) throws IOException {
-        final Properties prop = new Properties();
-        InputStream inputStream = null;
-        inputStream = new FileInputStream(dir + SRC_RESOURCE_PATH);
-        prop.load(inputStream);
-        return prop;
-    }
 
     private String getMigrationSqlName(String developerName, DateTimeFormatter dtf, LocalDateTime now) {
         return "V" + dtf.format(now) + "__" + developerName + ".sql";
