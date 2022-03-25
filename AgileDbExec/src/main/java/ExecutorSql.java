@@ -32,7 +32,7 @@ public class ExecutorSql extends AbstractMojo {
             flyway.repair();
             flyway.migrate();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+           throw new RuntimeException("Failed running Sql: "+ e.getMessage(), e);
         }
     }
 

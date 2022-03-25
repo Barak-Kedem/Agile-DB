@@ -36,7 +36,7 @@ public class CreateSql extends AbstractMojo {
             sql.createNewFile();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed running Sql: "+ e.getMessage(), e);
         }
     }
 
